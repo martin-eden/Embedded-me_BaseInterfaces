@@ -71,20 +71,28 @@ class IOutputStream
 };
 
 /*
-  Address iterator concept
+  Address iterator
 
   Main use is avoid writing for's. For writing while's instead.
 
-  Do implementation-specific initialization.
-  Then call GetNextAddr(&Addr) to get address. Until it fails.
+  Do implementation-specific. Then call GetNextAddr(&Addr)
+  to get address. Until it fails.
 */
-class IAddressIterator
+class TAddressIterator
 {
   public:
-    virtual TBool GetAddr(TAddress * Address) = 0;
-    virtual TBool AdvanceAddr() = 0;
-    TBool GetNextAddr(TAddress * Address)
-      { return GetAddr(Address) && AdvanceAddr(); }
+    TBool Init(TAddress StartAddr, TAddress EndAddr);
+
+    TBool GetAddr(TAddress * Address);
+    TBool AdvanceAddr();
+
+    TBool GetNextAddr(TAddress * Address);
+
+  private:
+    TAddress MaxAddr = 0;
+    TAddress CurrentAddr = 1;
+
+    TBool IsValidState();
 };
 
 /*
