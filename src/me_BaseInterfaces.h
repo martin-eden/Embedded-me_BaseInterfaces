@@ -19,6 +19,24 @@
 
 #include <me_BaseTypes.h>
 
+// We will remain in root namespace
+
+// Input stream concept
+class IInputStream
+{
+  public:
+    virtual TBool Read(TUnit * Unit) = 0;
+};
+
+// Output stream concept
+class IOutputStream
+{
+  public:
+    virtual TBool Write(TUnit Unit) = 0;
+};
+
+
+
 /*
   2025-08-27
 */
