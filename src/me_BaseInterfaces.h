@@ -70,6 +70,22 @@ class IOutputStream
     virtual TBool Write(TUnit Unit) = 0;
 };
 
+/*
+  Address iterator concept
+
+  Main use is avoid writing for's. For writing while's instead.
+
+  Do implementation-specific initialization.
+  Then call GetNextAddr(&Addr) to get address. Until it fails.
+*/
+class IAddressIterator
+{
+  public:
+    virtual TBool GetAddr(TAddress * Address) = 0;
+    virtual TBool AdvanceAddr() = 0;
+    TBool GetNextAddr(TAddress * Address)
+      { return GetAddr(Address) && AdvanceAddr(); }
+};
 
 /*
   2025-08-27
