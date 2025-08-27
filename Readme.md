@@ -18,7 +18,9 @@ Common interfaces that are used by some implementations.
 
 ## Install/remove
 
-That's a root library. There are no dependencies.
+Each module for this framework is wrapped as separate repository.
+Easy way is to clone [GetLibs][GetLibs] repo and run it's code to
+get em all. Or you can seek and pick em manually.
 
 
 ## See also
@@ -27,6 +29,8 @@ That's a root library. There are no dependencies.
 * [My other repositories][Repos]
 
 [Interface]: src/me_BaseInterfaces.h
+
+[GetLibs]: https://github.com/martin-eden/Embedded-Framework-GetLibs
 
 [Embedded]: https://github.com/martin-eden/Embedded_Crafts/tree/master/Parts
 [Repos]: https://github.com/martin-eden/contents
