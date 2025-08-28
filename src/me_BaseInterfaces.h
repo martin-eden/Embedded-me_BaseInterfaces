@@ -22,26 +22,19 @@
 // We will remain in root namespace
 
 /*
-  Method call
+  Void function call
 
-  Three-address structure
+  Three-address structure.
 
-  With dynamic functions generation we can reduce any call to
-  one address.
-
-  It's possible to reduce any call to two addresses but requires
-  packing data in instance.
-
-  Three addresses are quite convenient to call void methods.
+  We need first address to call something. We provide two extra
+  addresses that can be used for input or output.
 */
 typedef void (*TMethod)(TAddress Data, TAddress Instance);
 
 /*
-  Failable operation
+  Failable operation with two arguments
 
-  Aka boolean method call.
-
-  More convenience for some processing tasks.
+  Natural for most processing tasks.
 */
 typedef TBool (*TOperation)(TAddress Data, TAddress Instance);
 
@@ -82,7 +75,7 @@ class TAddressIterator
 {
   public:
     // Setup iteration span
-    TBool Init(TAddress StartAddr, TAddress EndAddr);
+    TBool Init(TAddressSegment AddrSeg);
 
     // Get address and move cursor
     TBool GetNextAddr(TAddress * Address);
@@ -90,15 +83,17 @@ class TAddressIterator
     // Get address
     TBool GetAddr(TAddress * Address);
     // Move cursor
-    TBool AdvanceAddr();
+    void AdvanceAddr();
 
   private:
-    TAddress MaxAddr = 0;
-    TAddress CurrentAddr = 1;
+    TAddress MaxAddr;
+    TAddress CurrentAddr;
 
     TBool IsValidState();
+    void Invalidate();
 };
 
 /*
   2025-08-27
+  2025-08-28
 */

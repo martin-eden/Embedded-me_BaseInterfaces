@@ -2,26 +2,19 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-27
+  Last mod.: 2025-08-28
 */
 
 #include <me_BaseInterfaces.h>
 
 #include <me_BaseTypes.h>
 
-/*
-  Set iteration margins
-*/
-TBool TAddressIterator::Init(
-  TAddress StartAddr,
-  TAddress EndAddr
-)
-{
-  this->CurrentAddr = StartAddr;
-  this->MaxAddr = EndAddr;
+#include <me_MemorySegment.h>
 
-  return IsValidState();
-}
+/*
+  We must handle case CurrentAddr == MaxAddr == 0xFFFF.
+  We should do one iteration for that and stop after.
+*/
 
 /*
   Check that iteration is not complete
@@ -29,6 +22,40 @@ TBool TAddressIterator::Init(
 TBool TAddressIterator::IsValidState()
 {
   return (CurrentAddr <= MaxAddr);
+}
+
+/*
+  Create invalid state
+*/
+void TAddressIterator::Invalidate()
+{
+  CurrentAddr = 1;
+  MaxAddr = 0;
+}
+
+/*
+  Set iteration margins
+*/
+TBool TAddressIterator::Init(
+  TAddressSegment AddrSeg
+)
+{
+  /*
+    Implementation relies on external segment validity check.
+
+    So later we can do "Addr + (Size - 1)" without checking
+    for overflows and underflows.
+  */
+
+  Invalidate();
+
+  if (!me_MemorySegment::IsValid(AddrSeg))
+    return false;
+
+  this->CurrentAddr = AddrSeg.Addr;
+  this->MaxAddr = AddrSeg.Addr + (AddrSeg.Size - 1);
+
+  return IsValidState();
 }
 
 /*
@@ -49,14 +76,19 @@ TBool TAddressIterator::GetAddr(
 /*
   Move to next address
 */
-TBool TAddressIterator::AdvanceAddr()
+void TAddressIterator::AdvanceAddr()
 {
   if (!IsValidState())
-    return false;
+    return;
+
+  if (CurrentAddr == TAddress_Max)
+  {
+    Invalidate();
+
+    return;
+  }
 
   ++CurrentAddr;
-
-  return true;
 }
 
 /*
@@ -66,9 +98,16 @@ TBool TAddressIterator::GetNextAddr(
   TAddress * Address
 )
 {
-  return GetAddr(Address) && AdvanceAddr();
+  TBool Result;
+
+  Result = GetAddr(Address);
+
+  AdvanceAddr();
+
+  return Result;
 }
 
 /*
   2025-08-27
+  2025-08-28
 */
