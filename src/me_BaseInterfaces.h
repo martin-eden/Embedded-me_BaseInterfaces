@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-27
+  Last mod.: 2025-08-28
 */
 
 /*
@@ -75,18 +75,22 @@ class IOutputStream
 
   Main use is avoid writing for's. For writing while's instead.
 
-  Do implementation-specific. Then call GetNextAddr(&Addr)
+  Do implementation-specific Init(). Then call GetNextAddr(&Addr)
   to get address. Until it fails.
 */
 class TAddressIterator
 {
   public:
+    // Setup iteration span
     TBool Init(TAddress StartAddr, TAddress EndAddr);
 
-    TBool GetAddr(TAddress * Address);
-    TBool AdvanceAddr();
-
+    // Get address and move cursor
     TBool GetNextAddr(TAddress * Address);
+
+    // Get address
+    TBool GetAddr(TAddress * Address);
+    // Move cursor
+    TBool AdvanceAddr();
 
   private:
     TAddress MaxAddr = 0;
