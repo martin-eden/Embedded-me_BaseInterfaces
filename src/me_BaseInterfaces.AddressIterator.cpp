@@ -2,14 +2,14 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-28
+  Last mod.: 2025-08-30
 */
 
 #include <me_BaseInterfaces.h>
 
 #include <me_BaseTypes.h>
 
-#include <me_MemorySegment.h>
+#include <me_AddrsegTools.h>
 
 /*
   We must handle case CurrentAddr == MaxAddr == 0xFFFF.
@@ -49,7 +49,7 @@ TBool TAddressIterator::Init(
 
   Invalidate();
 
-  if (!me_MemorySegment::IsValid(AddrSeg))
+  if (!me_AddrsegTools::IsValid(AddrSeg))
     return false;
 
   this->CurrentAddr = AddrSeg.Addr;
