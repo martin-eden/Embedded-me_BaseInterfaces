@@ -39,13 +39,41 @@ void CompilationTest()
   [[gnu::unused]] TFixedOperation FixedOperation = Func_FixedOperation;
 }
 
+void PrintAddress(
+  TAsciiz Annotation,
+  TAddress Addr
+)
+{
+  Console.Write(Annotation);
+  Console.Print(Addr);
+}
+
+void PrintWrappings(
+  TAsciiz Annotation,
+  TAddressSegment AddrSeg
+)
+{
+  Console.Write(Annotation);
+  Console.Write(" ( ");
+  PrintAddress("Addr", AddrSeg.Addr);
+  PrintAddress("Size", AddrSeg.Size);
+  Console.Write(")");
+  Console.EndLine();
+}
+
+/*
+  Test segment iterator
+*/
 void IteratorTest()
 {
   TAddressSegment AddrSeg = { .Addr = TAddress_Max - 2, .Size = 3 };
   TAddrsegIterator Rator;
   TAddress Addr;
 
-  Console.Print("( IteratorTest");
+  Console.Print("( Address segment iterator test");
+  Console.Indent();
+
+  PrintWrappings("Test segment", AddrSeg);
 
   if (!Rator.Init(AddrSeg))
     Console.Print("Iterator init failed");
@@ -57,15 +85,22 @@ void IteratorTest()
     Console.EndLine();
   }
 
-  Console.Print(") Done");
+  Console.Unindent();
+  Console.Print(")");
 }
 
 void setup()
 {
   Console.Init();
 
+  Console.Print("( [me_BaseInterfaces] test");
+  Console.Indent();
+
   CompilationTest();
   IteratorTest();
+
+  Console.Unindent();
+  Console.Print(") Done");
 }
 
 void loop()
@@ -73,5 +108,6 @@ void loop()
 }
 
 /*
-  2025-08-27
+  2025 #
+  2025-09-03
 */
