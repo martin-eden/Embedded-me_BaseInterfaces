@@ -1,0 +1,62 @@
+Suppose you have two bytes of RAM
+
+  0 1
+  A B
+
+One bit is enough for address then.
+
+Now we can describe segment as two addresses:
+
+  0 0 -> A
+  0 1 -> A B
+  1 0 -> (fail)
+  1 1 -> B
+
+Let's explore inter-unit indices as two addresses:
+
+          A B
+  0 0 -> ^
+  0 1 ->   ^
+  1 0 -> (fail)
+  1 1 ->     ^
+
+Note that it's impossible to describe inter-unit index in one address.
+
+
+Lets go to three bytes of RAM:
+
+  0 1 2
+  A B C
+
+Segments as two addresses:
+
+  0 0 -> A
+  0 1 -> A B
+  0 2 -> A B C
+  1 0 -> (fail)
+  1 1 -> B
+  1 2 -> B C
+  2 0 -> (fail)
+  2 1 -> (fail)
+  2 2 -> C
+
+Inter-unit indices:
+
+          A B C
+  0 0 -> ^
+  0 1 ->   ^
+  0 2 -> (fail)
+  1 0 -> (fail)
+  1 1 ->     ^
+  1 2 ->     ^
+  2 0 -> (fail)
+  2 1 -> (fail)
+  2 2 ->       ^
+
+Looks like continuously changed numbers (aka Gray codes) will fit here.
+
+We need (N x N) mem to describe segments. (N + 1) mem to describe index.
+N is a number of states value can take, compressed to number of bits:
+N = ceil(log2(NumValues))
+
+2025-09-02
