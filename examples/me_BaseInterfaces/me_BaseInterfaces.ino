@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-27
+  Last mod.: 2025-09-03
 */
 
 #include <me_BaseInterfaces.h>
@@ -42,7 +42,7 @@ void CompilationTest()
 void IteratorTest()
 {
   TAddressSegment AddrSeg = { .Addr = TAddress_Max - 2, .Size = 3 };
-  TAddressIterator Rator;
+  TAddrsegIterator Rator;
   TAddress Addr;
 
   Console.Print("( IteratorTest");
