@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-30
+  Last mod.: 2025-09-03
 */
 
 #include <me_BaseInterfaces.h>
@@ -15,23 +15,6 @@
   We must handle case CurrentAddr == MaxAddr == 0xFFFF.
   We should do one iteration for that and stop after.
 */
-
-/*
-  Check that iteration is not complete
-*/
-TBool TAddressIterator::IsValidState()
-{
-  return (CurrentAddr <= MaxAddr);
-}
-
-/*
-  Create invalid state
-*/
-void TAddressIterator::Invalidate()
-{
-  CurrentAddr = 1;
-  MaxAddr = 0;
-}
 
 /*
   Set iteration margins
@@ -47,30 +30,34 @@ TBool TAddressIterator::Init(
     for overflows and underflows.
   */
 
-  Invalidate();
+  CurrentAddr = 0;
+  MaxAddr = 0;
+  IterationIsDone = true;
 
   if (!me_AddrsegTools::IsValid(AddrSeg))
     return false;
 
-  this->CurrentAddr = AddrSeg.Addr;
-  this->MaxAddr = AddrSeg.Addr + (AddrSeg.Size - 1);
+  CurrentAddr = AddrSeg.Addr;
+  MaxAddr = AddrSeg.Addr + (AddrSeg.Size - 1);
+  IterationIsDone = false;
 
-  return IsValidState();
+  return true;
+}
+
+/*
+  Return "iteration is done" flag
+*/
+TBool TAddressIterator::IsDone()
+{
+  return IterationIsDone;
 }
 
 /*
   Get current address
 */
-TBool TAddressIterator::GetAddr(
-  TAddress * Address
-)
+TAddress TAddressIterator::GetAddr()
 {
-  if (!IsValidState())
-    return false;
-
-  *Address = CurrentAddr;
-
-  return true;
+  return CurrentAddr;
 }
 
 /*
@@ -78,17 +65,14 @@ TBool TAddressIterator::GetAddr(
 */
 void TAddressIterator::AdvanceAddr()
 {
-  if (!IsValidState())
-    return;
-
-  if (CurrentAddr == TAddress_Max)
+  if (CurrentAddr == MaxAddr)
   {
-    Invalidate();
+    IterationIsDone = true;
 
     return;
   }
 
-  ++CurrentAddr;
+  CurrentAddr = CurrentAddr + 1;
 }
 
 /*
@@ -98,16 +82,18 @@ TBool TAddressIterator::GetNextAddr(
   TAddress * Address
 )
 {
-  TBool Result;
+  *Address = GetAddr();
 
-  Result = GetAddr(Address);
+  if (IsDone())
+    return false;
 
   AdvanceAddr();
 
-  return Result;
+  return true;
 }
 
 /*
   2025-08-27
   2025-08-28
+  2025-09-03
 */

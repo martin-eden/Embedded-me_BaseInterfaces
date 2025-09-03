@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-28
+  Last mod.: 2025-09-03
 */
 
 /*
@@ -81,19 +81,20 @@ class TAddressIterator
     TBool GetNextAddr(TAddress * Address);
 
     // Get address
-    TBool GetAddr(TAddress * Address);
+    TAddress GetAddr();
     // Move cursor
     void AdvanceAddr();
+    // Check that iteration is complete
+    TBool IsDone();
 
   private:
     TAddress MaxAddr;
     TAddress CurrentAddr;
-
-    TBool IsValidState();
-    void Invalidate();
+    TBool IterationIsDone;
 };
 
 /*
   2025-08-27
   2025-08-28
+  2025-09-03
 */
