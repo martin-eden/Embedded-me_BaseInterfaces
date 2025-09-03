@@ -64,14 +64,14 @@ class IOutputStream
 };
 
 /*
-  Address iterator
+  Address segment iterator
 
   Main use is avoid writing for's. For writing while's instead.
 
   Do implementation-specific Init(). Then call GetNextAddr(&Addr)
   to get address. Until it fails.
 */
-class TAddressIterator
+class TAddrsegIterator
 {
   public:
     // Setup iteration span

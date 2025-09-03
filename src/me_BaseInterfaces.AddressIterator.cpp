@@ -19,7 +19,7 @@
 /*
   Set iteration margins
 */
-TBool TAddressIterator::Init(
+TBool TAddrsegIterator::Init(
   TAddressSegment AddrSeg
 )
 {
@@ -47,7 +47,7 @@ TBool TAddressIterator::Init(
 /*
   Return "iteration is done" flag
 */
-TBool TAddressIterator::IsDone()
+TBool TAddrsegIterator::IsDone()
 {
   return IterationIsDone;
 }
@@ -55,7 +55,7 @@ TBool TAddressIterator::IsDone()
 /*
   Get current address
 */
-TAddress TAddressIterator::GetAddr()
+TAddress TAddrsegIterator::GetAddr()
 {
   return CurrentAddr;
 }
@@ -63,7 +63,7 @@ TAddress TAddressIterator::GetAddr()
 /*
   Move to next address
 */
-void TAddressIterator::AdvanceAddr()
+void TAddrsegIterator::AdvanceAddr()
 {
   if (CurrentAddr == MaxAddr)
   {
@@ -78,7 +78,7 @@ void TAddressIterator::AdvanceAddr()
 /*
   Get current address and advance
 */
-TBool TAddressIterator::GetNextAddr(
+TBool TAddrsegIterator::GetNextAddr(
   TAddress * Address
 )
 {
